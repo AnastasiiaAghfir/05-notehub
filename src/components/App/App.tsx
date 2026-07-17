@@ -50,7 +50,7 @@ export default function App() {
                 {/* Кнопка створення нотатки */}
                 <button onClick={openModal} className={css.button}>Create note +</button>
                 {isModalOpen && <Modal onClose={closeModal}>
-                    <NoteForm onCancel={ closeModal } onSubmit={closeModal} /> </Modal>}
+                    <NoteForm onClose={ closeModal } /> </Modal>}
             </header>
             {data && data.notes.length > 0 && <NoteList notes={data.notes} onDelete={deleteMutation.mutate}  />}
         </div>

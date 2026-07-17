@@ -7,18 +7,17 @@ import { useQueryClient } from '@tanstack/react-query';
 import { createNote } from '../../services/noteService';
 
 interface NoteFormProps{
-    onCancel: () => void;
-    onSubmit: () => void;
+    onClose: () => void;
 }
 const initialValues: NoteFormValues = {
     title: '',
     content: '',
-    tag: '',
+    tag: null,
 }
 
 const noteValidationSchema = Yup.object().shape({
     title: Yup.string()
-        .min(2, 'Title must be at least 3 characters.')
+        .min(3, 'Title must be at least 3 characters.')
         .max(50, 'Title must be maximum 50 characters.')
         .required('Title is required!'),
     content: Yup.string()
@@ -28,7 +27,7 @@ const noteValidationSchema = Yup.object().shape({
         .required('Tag is required!')
 })  
 
-export default function NoteForm({onCancel, onSubmit}: NoteFormProps) {
+export default function NoteForm({onClose}: NoteFormProps) {
     const queryClient = useQueryClient();
 
     const mutation = useMutation({
@@ -37,6 +36,7 @@ export default function NoteForm({onCancel, onSubmit}: NoteFormProps) {
             queryClient.invalidateQueries({
                 queryKey: ['notes'],
             });
+        onClose();
         },
     });
 
@@ -45,7 +45,6 @@ export default function NoteForm({onCancel, onSubmit}: NoteFormProps) {
         actions: FormikHelpers<NoteFormValues>
     ) => {
         mutation.mutate(values);
-        onSubmit();
         actions.resetForm();
     }
     return (
@@ -82,7 +81,7 @@ export default function NoteForm({onCancel, onSubmit}: NoteFormProps) {
                 </div>
 
                 <div className={css.actions}>
-                    <button onClick={onCancel} type="button" className={css.cancelButton}>
+                    <button onClick={onClose} type="button" className={css.cancelButton}>
                     Cancel
                     </button>
                     <button
