@@ -1,0 +1,52 @@
+import axios from "axios";
+import type { Note } from '../types/note';
+
+
+interface NotesResponse {
+  notes: Note[];
+  totalPages: number;
+}
+export async function fetchNotes(
+  query?: string,
+  page: number = 1
+): Promise<NotesResponse> {
+    const fetchResponse = await axios.get<NotesResponse>('https://notehub-public.goit.study/api/notes', {
+      params: {
+        ...(query? { search: query } : {}),
+        page
+      },
+        headers: {
+            Authorization: `Bearer ${import.meta.env.VITE_NOTEHUB_TOKEN}`,
+         },
+    })
+    console.log(fetchResponse.data);
+    return fetchResponse.data;
+}
+
+interface CreateNoteData {
+  title: string;
+  content: string;
+  tag: string;
+}
+export async function createNote(values: CreateNoteData): Promise<Note> {
+  const createResponse = await axios.post<Note>(
+    'https://notehub-public.goit.study/api/notes', values,
+    {
+      headers: {
+        Authorization: `Bearer ${import.meta.env.VITE_NOTEHUB_TOKEN}`,
+      }
+    })
+  return createResponse.data;
+}
+
+export async function deleteNote(id: string) {
+  await axios.delete(
+    `https://notehub-public.goit.study/api/notes/${id}`,
+    {
+      headers: {
+        Authorization: `Bearer ${import.meta.env.VITE_NOTEHUB_TOKEN}`,
+      }
+    }
+  )
+  
+}
