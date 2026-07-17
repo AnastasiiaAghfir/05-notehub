@@ -1,5 +1,6 @@
 import axios from "axios";
 import type { Note } from '../types/note';
+import type { NoteTag } from "../types/formValues";
 
 
 interface NotesResponse {
@@ -25,7 +26,7 @@ export async function fetchNotes(
 interface CreateNoteData {
   title: string;
   content: string;
-  tag: string;
+  tag: NoteTag;
 }
 export async function createNote(values: CreateNoteData): Promise<Note> {
   const createResponse = await axios.post<Note>(
