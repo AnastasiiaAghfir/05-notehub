@@ -19,7 +19,6 @@ export async function fetchNotes(
             Authorization: `Bearer ${import.meta.env.VITE_NOTEHUB_TOKEN}`,
          },
     })
-    console.log(fetchResponse.data);
     return fetchResponse.data;
 }
 
