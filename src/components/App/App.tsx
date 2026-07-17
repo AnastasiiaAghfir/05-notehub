@@ -2,11 +2,10 @@ import css from './App.module.css';
 import NoteList from '../NoteList/NoteList';
 import { useState } from 'react';
 import { fetchNotes } from '../../services/noteService';
-import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import Pagination from '../Pagination/Pagination';
 import Modal from '../Modal/Modal';
 import NoteForm from '../NoteForm/NoteForm';
-import { deleteNote } from '../../services/noteService';
 import SearchBox from '../SearchBox/SearchBox';
 // import type { Note } from '../../types/note';
 
@@ -26,16 +25,7 @@ export default function App() {
 
     const closeModal = () => setIsModalOpen(false);
     
-    const queryClient = useQueryClient();
-
-    const deleteMutation = useMutation({
-        mutationFn: deleteNote,
-        onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: ['notes'],
-            })
-        }
-    })
+   
     
     return (
         <div className={css.app}>
@@ -52,7 +42,7 @@ export default function App() {
                 {isModalOpen && <Modal onClose={closeModal}>
                     <NoteForm onClose={ closeModal } /> </Modal>}
             </header>
-            {data && data.notes.length > 0 && <NoteList notes={data.notes} onDelete={deleteMutation.mutate}  />}
+            {data && data.notes.length > 0 && <NoteList notes={data.notes}  />}
         </div>
     )
 }
