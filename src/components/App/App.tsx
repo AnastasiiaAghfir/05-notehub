@@ -15,7 +15,7 @@ export default function App() {
     const [currentPage, setCurrentPage] = useState(1);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const { data, isLoading, isFetching } = useQuery({
+    const { data} = useQuery({
         queryKey: ['notes', query, currentPage],
         queryFn: () => fetchNotes(query, currentPage),
         placeholderData: keepPreviousData,
