@@ -12,7 +12,7 @@ interface NoteFormProps{
 const initialValues: NoteFormValues = {
     title: '',
     content: '',
-    tag: null,
+    tag: '',
 }
 
 const noteValidationSchema = Yup.object().shape({
@@ -44,7 +44,14 @@ export default function NoteForm({onClose}: NoteFormProps) {
         values: NoteFormValues,
         actions: FormikHelpers<NoteFormValues>
     ) => {
-        mutation.mutate(values);
+        if (!values.tag) {
+            return;
+        }
+        mutation.mutate({
+            title: values.title,
+            content: values.content,
+            tag: values.tag,
+        });
         actions.resetForm();
     }
     return (
